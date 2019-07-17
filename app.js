@@ -1,10 +1,11 @@
 //Import Package
 const express = require('express');
-
 //Execute it 
 const app = express();
-
 const mongoose = require('mongoose')
+require('dotenv/config');
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
 
 
 //Middlewares - function that executes when routes are being hit 
@@ -12,18 +13,22 @@ const mongoose = require('mongoose')
 //     console.log('This is middleware running')
 // })
 
+//Import Routes 
+const postsRoute = require('./routes/posts')
+
+app.use('/posts', postsRoute)
+
+
 
 //ROUTES 
 app.get('/', (req, res) => {
     res.send('We are on home')
 })
 
-app.get('/posts', (req, res) => {
-    res.send('We are on posts')
-})
+
 
 //Connect to DB 
-mongoose.connect('mongodb+srv://febanda91:Frankie@1991@cluster0-l1rbz.mongodb.net/test?retryWrites=true&w=majority',
+mongoose.connect(process.env.DB_CONNECTION,
 { useNewUrlParser: true },
 () => {console.log('connected to DB!')
 })
